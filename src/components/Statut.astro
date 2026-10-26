@@ -1,0 +1,14 @@
+---
+// Pastille « Ouvert maintenant / Fermé », remplie par le script de Base.astro (fuseau Europe/Paris).
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<p class={`statut inline-flex items-center gap-2.5 font-bold ${cls}`} data-statut role="status">
+  <span class="pastille" aria-hidden="true"></span>
+  <span data-statut-texte>Mardi au samedi, 12h à 21h</span>
+</p>
+<style>
+  .pastille { width: .9rem; height: .9rem; border-radius: 50%; border: 2px solid var(--color-noir); background: var(--color-chaux); flex: none; }
+  [data-ouvert='oui'] .pastille { background: var(--color-feuille); }
+  [data-ouvert='non'] .pastille { background: var(--color-piment); }
+</style>

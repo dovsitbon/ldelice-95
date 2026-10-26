@@ -1,0 +1,34 @@
+---
+// Le bokit en coupe, avec les mots des clients. Les garnitures exactes restent à confirmer.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<svg class={cls} viewBox="0 0 460 330" role="img" aria-labelledby="bokit-titre">
+  <title id="bokit-titre">Schéma d’un bokit en coupe : un pain frit doré, ouvert et garni de poulet. Légendes : pâte croustillante, poulet bien assaisonné et bien garni.</title>
+  <!-- pain du dessus -->
+  <path d="M70 168 C 70 92, 160 62, 230 62 C 300 62, 390 92, 390 168 Z" fill="#d9a514" stroke="#141414" stroke-width="4" stroke-linejoin="round" />
+  <path d="M86 164 C 92 112, 160 86, 230 86 C 300 86, 368 112, 374 164 Z" fill="#f6dc8a" />
+  <path d="M120 96 q8 -6 16 0 M196 74 q8 -6 16 0 M282 78 q8 -6 16 0 M344 104 q8 -6 16 0" stroke="#141414" stroke-opacity=".45" stroke-width="2.5" fill="none" stroke-linecap="round" />
+  <!-- garniture -->
+  <path d="M62 170 C 90 158, 110 182, 140 168 C 170 154, 190 182, 220 168 C 250 154, 270 182, 300 168 C 330 154, 350 182, 398 170 L398 186 L62 186 Z" fill="#1e7b3a" stroke="#141414" stroke-width="3" stroke-linejoin="round" />
+  <g stroke="#141414" stroke-width="3" stroke-linejoin="round">
+    <path d="M78 186 h70 l-6 22 h-60 z" fill="#9a5424" />
+    <path d="M150 186 h84 l-4 24 h-76 z" fill="#b8692f" />
+    <path d="M236 186 h74 l-5 21 h-66 z" fill="#9a5424" />
+    <path d="M312 186 h70 l-6 23 h-60 z" fill="#b8692f" />
+  </g>
+  <g fill="#c8281d" stroke="#141414" stroke-width="1.5">
+    <circle cx="118" cy="178" r="5" /><circle cx="196" cy="176" r="5" /><circle cx="276" cy="178" r="5" /><circle cx="350" cy="176" r="5" />
+  </g>
+  <!-- pain du dessous -->
+  <path d="M68 210 L392 210 C 392 262, 320 284, 230 284 C 140 284, 68 262, 68 210 Z" fill="#d9a514" stroke="#141414" stroke-width="4" stroke-linejoin="round" />
+  <path d="M86 214 L374 214 C 370 248, 310 262, 230 262 C 150 262, 90 248, 86 214 Z" fill="#f6dc8a" />
+
+  <!-- légendes -->
+  <g font-family="Nunito Sans Variable, sans-serif" font-weight="800" font-size="17" fill="#141414">
+    <path d="M330 70 C 350 40, 372 30, 396 30" stroke="#141414" stroke-width="2.5" fill="none" />
+    <text x="300" y="22">pâte croustillante</text>
+    <path d="M112 200 C 80 240, 50 300, 30 306" stroke="#141414" stroke-width="2.5" fill="none" />
+    <text x="40" y="324">poulet bien assaisonné, bien garni</text>
+  </g>
+</svg>

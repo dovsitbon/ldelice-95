@@ -1,0 +1,15 @@
+# Ldelice 95 (Saint-Brice-sous-Forêt)
+
+> Restaurant caribéen de bokits et de cuisine haïtienne, 100 % fait maison et cuisiné sous les yeux des clients, au 2 rue René Cassin, 95350 Saint-Brice-sous-Forêt (Val-d'Oise). Parfois écrit « L'Délice 95 ». Note Google 4,7/5 sur 79 avis.
+
+- Téléphone (commandes à emporter, traiteur, réservations) : 07 61 52 48 64
+- Horaires : mardi au samedi 12h00–21h00 ; dimanche et lundi fermés
+- Plats cités par les clients : bokit poulet, griot (porc), riz djondjon, banane pesée, pikliz frais, pickles, poulet
+- Format : petite maison avec terrasse, vente à emporter, traiteur, réservations acceptées
+- Sur place : parking gratuit, accessible en fauteuil roulant, carte bancaire et sans contact
+- Clients des communes voisines : Groslay, Montmorency, Sarcelles, Deuil-la-Barre, Montmagny, Domont, Ézanville
+
+## Pages
+- [Accueil](https://ldelice-95.vercel.app/) : le bokit expliqué, cuisine haïtienne et lexique, carte, avis, traiteur, horaires et accès
+- [La carte](https://ldelice-95.vercel.app/#carte) : bokits, plats haïtiens, accompagnements (prix en cours de confirmation)
+- [Infos pratiques](https://ldelice-95.vercel.app/#infos) : horaires, adresse, parking, questions fréquentes

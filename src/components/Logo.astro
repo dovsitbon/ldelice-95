@@ -1,0 +1,11 @@
+---
+// Enseigne « Ldelice 95 » : petite planche jaune, lettres peintes.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<span translate="no" class={`logo inline-flex items-center gap-1.5 bg-soleil border-[3px] border-noir pl-2.5 pr-1.5 py-1 font-enseigne text-[1.45rem] leading-none ${cls}`}>
+  <span class="pt-0.5">Ldelice</span><span class="bg-piment text-white rounded-full w-[2.05rem] h-[2.05rem] grid place-items-center text-[1.05rem] border-2 border-noir">95</span>
+</span>
+<style>
+  .logo { border-radius: 5px 2px 6px 3px; transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--color-noir); color: var(--color-noir); }
+</style>

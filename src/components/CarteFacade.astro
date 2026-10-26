@@ -1,0 +1,38 @@
+---
+import { SITE } from '../data/site';
+---
+<div class="carte relative w-full min-w-0 aspect-[4/3] md:aspect-auto md:h-full min-h-[320px] border-[3px] border-noir overflow-hidden bg-sable" data-carte>
+  <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="400" height="300" fill="#f1ecdc" />
+    <g transform="translate(0 -55)">
+    <path d="M-10 196 C 110 181, 220 172, 420 156" stroke="#fbfaf5" stroke-width="26" fill="none" />
+    <path d="M-10 196 C 110 181, 220 172, 420 156" stroke="#141414" stroke-opacity=".25" stroke-width="2" stroke-dasharray="10 9" fill="none" />
+    <path d="M182 -10 C 186 80, 192 170, 212 380" stroke="#fbfaf5" stroke-width="12" fill="none" />
+    <text x="240" y="160" font-family="Nunito Sans Variable, sans-serif" font-size="13" font-weight="700" fill="#4b4a45" transform="rotate(-4 240 160)">rue René Cassin</text>
+    <g transform="translate(132 168)">
+      <path d="M0 0 C -15 -17, -15 -36, 0 -36 C 15 -36, 15 -17, 0 0 Z" fill="#c8281d" stroke="#141414" stroke-width="2.5" />
+      <circle cx="0" cy="-23" r="5.5" fill="#f6c320" stroke="#141414" stroke-width="1.5" />
+    </g>
+    </g>
+  </svg>
+  <p class="absolute left-3 right-3 top-3 w-fit bg-chaux px-2.5 py-1 text-[.92rem] font-bold border-2 border-noir">{SITE.adresse.rue}, {SITE.adresse.cp} {SITE.adresse.ville}</p>
+  <div class="absolute left-3 right-3 bottom-3 flex flex-wrap gap-3">
+    <button type="button" class="btn btn-chaux" data-charger-carte>Afficher la carte Google</button>
+    <a href={SITE.itineraire} class="btn btn-soleil" target="_blank" rel="noopener">Itinéraire</a>
+  </div>
+</div>
+<script>
+  import { SITE } from '../data/site';
+  document.querySelectorAll<HTMLElement>('[data-carte]').forEach((box) => {
+    box.querySelector('[data-charger-carte]')?.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = SITE.carte;
+      f.title = 'Carte : Ldelice 95, 2 rue René Cassin, Saint-Brice-sous-Forêt';
+      f.loading = 'lazy';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.className = 'absolute inset-0 w-full h-full border-0';
+      box.replaceChildren(f);
+      f.focus();
+    });
+  });
+</script>

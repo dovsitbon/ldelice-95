@@ -1,0 +1,13 @@
+---
+// Emplacement d'une photo à prendre (voir PHOTOS_A_PRENDRE.md). À remplacer par <Image> d'astro:assets.
+interface Props { legende: string; numero: string; teinte?: 'soleil' | 'feuille' | 'piment'; ratio?: string; class?: string }
+const { legende, numero, teinte = 'soleil', ratio = '4/5', class: cls = '' } = Astro.props;
+const fonds = { soleil: 'bg-soleil text-noir', feuille: 'bg-feuille text-white', piment: 'bg-piment text-white' };
+---
+<figure class={`photo relative border-[3px] border-noir overflow-hidden ${fonds[teinte]} ${cls}`} style={`aspect-ratio:${ratio}`}>
+  <svg class="absolute inset-0 w-full h-full opacity-[.14]" aria-hidden="true"><defs><pattern id={`hachure-${numero}`} width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="3" height="16" fill="currentColor" /></pattern></defs><rect width="100%" height="100%" fill={`url(#hachure-${numero})`} /></svg>
+  <figcaption class="absolute inset-x-0 bottom-0 p-4 md:p-5">
+    <span class="block font-enseigne text-[1.1rem] mb-1">Photo n° {numero} à prendre</span>
+    <span class="block text-[.98rem] leading-snug font-semibold">{legende}</span>
+  </figcaption>
+</figure>

@@ -1,0 +1,27 @@
+---
+import PageTexte from '../components/PageTexte.astro';
+import { SITE } from '../data/site';
+---
+<PageTexte title="Mentions légales | Ldelice 95, Saint-Brice-sous-Forêt" description="Mentions légales du site de Ldelice 95, restaurant de bokits et de cuisine haïtienne au 2 rue René Cassin, 95350 Saint-Brice-sous-Forêt : éditeur, hébergeur." h1="Mentions légales">
+  <h2>Éditeur du site</h2>
+  <p>{SITE.nom} ({SITE.autreNom})<br />
+  Raison sociale et forme juridique : <span class="ac">[À CONFIRMER]</span><br />
+  SIRET : <span class="ac">[À CONFIRMER]</span><br />
+  N° TVA intracommunautaire : <span class="ac">[À CONFIRMER]</span><br />
+  Adresse : {SITE.adresse.rue}, {SITE.adresse.cp} {SITE.adresse.ville}<br />
+  Téléphone : <a href={`tel:${SITE.telLien}`}>{SITE.telAffiche}</a><br />
+  E-mail : <span class="ac">[À CONFIRMER]</span></p>
+  <p>Directeur de la publication : <span class="ac">[À CONFIRMER]</span></p>
+
+  <h2>Hébergeur</h2>
+  <p>Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis. <a href="https://vercel.com" target="_blank" rel="noopener">vercel.com</a></p>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>Les textes, illustrations et photos de ce site appartiennent à {SITE.nom}, sauf mention contraire. Les extraits d’avis sont issus d’avis publics laissés sur Google. Toute reproduction sans autorisation est interdite.</p>
+
+  <h2>Carte et prix</h2>
+  <p>La carte et les prix affichés sont donnés à titre indicatif et peuvent changer. Seuls les prix annoncés sur place ou au téléphone font foi.</p>
+
+  <h2>Données personnelles</h2>
+  <p>Voir la <a href="/confidentialite/">politique de confidentialité</a>.</p>
+</PageTexte>

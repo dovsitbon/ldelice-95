@@ -1,0 +1,336 @@
+---
+import Base from '../layouts/Base.astro';
+import Case from '../components/Case.astro';
+import BokitCoupe from '../components/BokitCoupe.astro';
+import Statut from '../components/Statut.astro';
+import Photo from '../components/Photo.astro';
+import CarteFacade from '../components/CarteFacade.astro';
+import carte from '../data/carte.json';
+import { SITE, HORAIRES, AVIS, fmtHeure } from '../data/site';
+
+const tel = `tel:${SITE.telLien}`;
+const defile = ['Bokit', 'Griot', 'Pikliz', 'Banane pesée', 'Riz djondjon'];
+
+const lexique: [string, string][] = [
+  ['Bokit', 'Pain antillais frit, ouvert en deux et garni. Se mange avec les mains.'],
+  ['Griot', 'Le porc à la haïtienne. Ici en plat complet : riz, banane pesée et pikliz.'],
+  ['Riz djondjon', 'Le riz noir d’Haïti, coloré par le djon-djon, un petit champignon séché.'],
+  ['Banane pesée', 'Banane plantain verte, aplatie (« pesée ») puis frite.'],
+  ['Pikliz', 'Condiment haïtien pimenté, des légumes au vinaigre. Ici fait maison, servi frais.'],
+  ['Lolo', 'Aux Antilles, la petite boutique de quartier. Souvent minuscule, toujours fréquentée.'],
+  ['Tap-tap', 'En Haïti, les bus peints de toutes les couleurs. Nos couleurs viennent de là.'],
+];
+
+const teintes: Record<string, string> = {
+  soleil: 'bg-soleil text-noir',
+  feuille: 'bg-feuille text-white',
+  piment: 'bg-piment text-white',
+};
+const inclinaisons = ['-1.4deg', '1deg', '-0.6deg', '1.3deg'];
+
+const faq: [string, string, string?][] = [
+  ['Où se trouve Ldelice 95 ?', `Au ${SITE.adresse.rue}, ${SITE.adresse.cp} ${SITE.adresse.ville}, dans le Val-d’Oise. Les clients viennent aussi de ${SITE.voisines.join(', ')}.`],
+  ['Peut-on se garer facilement ?', 'Oui. Le parking est gratuit et on se gare facilement.'],
+  ['Peut-on manger sur place ?', 'Oui, en terrasse, ou bien à emporter.', 'Salle intérieure :'],
+  ['Comment commander à emporter ?', `Par téléphone au ${SITE.telAffiche}, du mardi au samedi de 12h à 21h. Votre commande vous attend.`],
+  ['Quels moyens de paiement ?', 'Carte bancaire et paiement sans contact.'],
+  ['Le lieu est-il accessible en fauteuil roulant ?', 'Oui, Ldelice 95 est accessible en fauteuil roulant.'],
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map(([q, r]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: r } })),
+};
+---
+<Base
+  title="Ldelice 95, bokits et cuisine haïtienne à Saint-Brice"
+  description="Le bokit dont tout Saint-Brice parle : bokits, griot, riz djondjon, banane pesée et pikliz faits maison. 2 rue René Cassin, du mardi au samedi 12h-21h."
+  jsonld={[faqLd]}
+>
+  <!-- 1. Accueil : la façade -->
+  <section class="hero relative overflow-hidden" aria-labelledby="titre">
+    <div class="wrap grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-6 items-center pt-10 pb-12 md:pt-14 md:pb-16">
+      <div>
+        <p class="font-bold text-[1.02rem] mb-4">Bokits et cuisine haïtienne, {SITE.adresse.rue} à Saint-Brice-sous-Forêt</p>
+        <h1 id="titre" class="peint text-[3.1rem] sm:text-[4.2rem] lg:text-[5.4rem] leading-[.95]">Le bokit dont tout <span class="whitespace-nowrap">Saint-Brice</span> parle</h1>
+        <p class="blague mt-6 text-[1.3rem] md:text-[1.5rem] leading-snug max-w-[30ch] font-semibold">De l’extérieur, on ne paie pas de mine. <span class="font-extrabold">Dans l’assiette, c’est une autre histoire.</span></p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href={tel} class="btn btn-piment">Commander par téléphone</a>
+          <a href="#carte" class="btn btn-chaux">Voir la carte</a>
+        </div>
+        <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <p class="note inline-flex items-baseline gap-2"><span class="font-enseigne text-[2rem] leading-none">{SITE.note}/5</span><span class="font-bold">sur {SITE.nbAvis} avis Google</span></p>
+          <Statut />
+        </div>
+      </div>
+      <div class="relative">
+        <Case class="w-full h-auto max-w-[620px] mx-auto" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Bandeau défilant -->
+  <div class="defile relative bg-soleil border-y-[3px] border-noir overflow-hidden" data-defile>
+    <p class="sr-only">Au menu : bokit, griot, pikliz, banane pesée, riz djondjon.</p>
+    <button type="button" class="pause" data-pause aria-pressed="false">Pause</button>
+    <div class="piste flex w-max" aria-hidden="true">
+      {[0, 1].map(() => (
+        <ul class="flex shrink-0 items-center">
+          {[...defile, ...defile].map((mot) => (
+            <li class="flex items-center font-enseigne text-[1.7rem] md:text-[2.1rem] py-2.5 whitespace-nowrap">
+              <span class="px-5">{mot}</span><span class="point" aria-hidden="true"></span>
+            </li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </div>
+
+  <!-- 3. Le bokit -->
+  <section id="bokit" class="py-16 md:py-24" aria-labelledby="t-bokit">
+    <div class="wrap grid md:grid-cols-[1fr_1.1fr] gap-10 md:gap-14 items-center">
+      <div>
+        <h2 id="t-bokit" class="peint text-[2.6rem] md:text-[3.6rem]">Un bokit, c’est quoi ?</h2>
+        <p class="mt-5 text-[1.15rem] max-w-[46ch]">Un pain antillais frit, ouvert en deux et garni. Croustillant dehors, bien garni dedans, et on le mange avec les mains.</p>
+        <p class="mt-4 max-w-[46ch]">Celui dont parlent les clients, c’est le <strong>bokit poulet</strong> : pâte croustillante, poulet bien assaisonné, bien garni. Préparé à la commande, sous vos yeux.</p>
+        <h3 class="mt-8 text-[1.5rem]">Les garnitures</h3>
+        <ul class="garnis mt-3 space-y-2">
+          <li><strong>Poulet</strong>, le classique de la maison</li>
+          <li>Les autres garnitures du moment : <span class="ac">[À CONFIRMER]</span></li>
+        </ul>
+        <blockquote class="mt-9 border-l-[6px] border-piment pl-5 max-w-[44ch]">
+          <p class="text-[1.15rem] font-semibold italic">« Ça fait longtemps que je n’ai pas mangé de bokit aussi bon (la dernière fois c’était en Guadeloupe). »</p>
+          <footer class="mt-2 text-[.95rem] font-bold">Avis Google</footer>
+        </blockquote>
+      </div>
+      <div class="planche bg-soleil p-5 md:p-8 rotate-[1deg]">
+        <BokitCoupe class="w-full h-auto" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. La cuisine haïtienne -->
+  <section id="cuisine" class="bg-feuille text-white" aria-labelledby="t-cuisine">
+    <div class="madras madras-bord" aria-hidden="true"></div>
+    <div class="wrap py-16 md:py-24">
+      <div class="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-16 items-start">
+        <div>
+          <h2 id="t-cuisine" class="peint text-[2.6rem] md:text-[3.6rem]">La cuisine haïtienne, comme au pays</h2>
+          <p class="mt-5 text-[1.15rem] max-w-[50ch]">À côté des bokits, la carte parle créole d’Haïti : griot, riz djondjon, banane pesée, pikliz, poulet. Tout est fait maison, les portions sont copieuses, et la musique est bonne. « Ça rappelle l’ambiance au pays », disent les clients.</p>
+          <blockquote class="mt-8 bg-chaux text-noir border-[3px] border-noir p-5 md:p-6 max-w-[46ch] -rotate-[0.8deg] shadow-[5px_5px_0_#141414]">
+            <p class="text-[1.12rem] font-semibold">« Un plat de griot complet riz et banane avec le pikliz : c’était un délice, le pikliz était frais. »</p>
+            <footer class="mt-2 text-[.95rem] font-bold">Avis Google</footer>
+          </blockquote>
+        </div>
+        <Photo numero="4" teinte="soleil" ratio="5/4" legende="Le griot complet vu de dessus : riz djondjon, banane pesée et pikliz, à la lumière du jour en terrasse." />
+      </div>
+
+      <h3 class="mt-16 md:mt-20 text-[2rem] md:text-[2.4rem] text-soleil">Petit lexique pour commander sans hésiter</h3>
+      <dl class="lexique mt-6 grid md:grid-cols-2 gap-x-12">
+        {lexique.map(([mot, def]) => (
+          <div class="py-4 border-t-2 border-dashed border-white/45 grid grid-cols-[minmax(8.5rem,auto)_1fr] gap-4 items-baseline">
+            <dt class="font-enseigne text-[1.5rem] text-soleil leading-tight">{mot}</dt>
+            <dd class="leading-snug">{def}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- 5. La carte en planches peintes -->
+  <section id="carte" class="carte-mur py-16 md:py-24" aria-labelledby="t-carte">
+    <div class="wrap">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <h2 id="t-carte" class="peint text-[2.6rem] md:text-[3.6rem]">La carte, peinte à la main</h2>
+        <p class="max-w-[44ch] font-semibold">Les prix sont en cours de vérification avec le chef. En attendant, le prix du jour se demande au <a href={tel} class="underline underline-offset-4 font-extrabold">{SITE.telAffiche}</a>.</p>
+      </div>
+      <div class="mt-12 grid md:grid-cols-2 gap-x-10 gap-y-12 items-start">
+        {carte.planches.map((p, i) => (
+          <article class={`planche ${teintes[p.couleur]} px-6 pt-7 pb-6 md:px-9 md:pt-9`} style={`--incl:${inclinaisons[i % 4]}`} data-pose aria-labelledby={`pl-${p.id}`}>
+            <h3 id={`pl-${p.id}`} class="text-[2.1rem] md:text-[2.5rem] mb-4">{p.titre}</h3>
+            <ul class="space-y-4">
+              {p.plats.map((pl: any) => (
+                <li>
+                  <div class="flex items-baseline gap-3">
+                    <span class="font-enseigne text-[1.35rem] md:text-[1.5rem] leading-tight">{pl.nom}</span>
+                    <span class="pointilles flex-1" aria-hidden="true"></span>
+                    {pl.prix ? <span class="font-enseigne text-[1.4rem]">{pl.prix}</span> : <span class="ac">[À CONFIRMER]</span>}
+                  </div>
+                  {pl.detail && <p class="mt-0.5 font-semibold">{pl.detail}{pl.aconfirmer && <> <span class="ac">[À CONFIRMER]</span></>}</p>}
+                  {!pl.detail && pl.aconfirmer && <p class="mt-1"><span class="ac">[À CONFIRMER]</span></p>}
+                  {pl.noteprix && <p class="mt-1 text-[.95rem] opacity-90">Prix : {pl.noteprix}.</p>}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+      <p class="mt-12 max-w-[60ch]">Comptez autour de 15 € par personne selon un annuaire en ligne <span class="ac">[À CONFIRMER]</span>. Carte bancaire et sans contact acceptés.</p>
+    </div>
+  </section>
+
+  <!-- 6. Ne vous fiez pas à la façade -->
+  <section id="facade" class="bg-soleil border-y-[3px] border-noir" aria-labelledby="t-facade">
+    <div class="wrap py-16 md:py-24 grid lg:grid-cols-[1fr_1.25fr] gap-10 lg:gap-14 items-center">
+      <div>
+        <h2 id="t-facade" class="peint text-[2.6rem] md:text-[3.8rem]">Ne vous fiez pas à la façade</h2>
+        <p class="mt-6 text-[1.15rem] max-w-[46ch]">Oui, c’est une petite maison. Non, il n’y a pas de grande salle : on mange en terrasse ou on emporte.</p>
+        <p class="mt-4 text-[1.15rem] max-w-[46ch]">Derrière le comptoir, le chef cuisine tout devant vous, souvent seul, avec le sourire. Aux heures de pointe, le plus simple est d’appeler avant : votre commande vous attend.</p>
+        <p class="mt-4 max-w-[46ch]">Si vous êtes passé il y a longtemps : la maison a changé de propriétaire il y a environ quatre ans.</p>
+        <blockquote class="mt-8 max-w-[44ch]">
+          <p class="font-enseigne text-[1.6rem] md:text-[1.9rem] leading-tight">« Les apparences sont trompeuses : on ne vient pas pour l’esthétique de l’extérieur mais pour la nourriture. »</p>
+          <footer class="mt-2 font-bold">Avis Google</footer>
+        </blockquote>
+      </div>
+      <div class="photos grid grid-cols-2 gap-4 md:gap-5">
+        <Photo numero="1" teinte="feuille" ratio="auto" class="row-span-2 h-full min-h-[22rem]" legende="La façade depuis le trottoir, enseigne et auvent bien visibles, en fin de matinée." />
+        <Photo numero="2" teinte="piment" ratio="1/1" legende="La terrasse avec ses tables, cadrée en largeur." />
+        <Photo numero="3" teinte="feuille" ratio="1/1" legende="Le chef au comptoir, bokit en préparation, mains et geste au premier plan." />
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Avis -->
+  <section id="avis" class="py-16 md:py-24" aria-labelledby="t-avis">
+    <div class="wrap grid lg:grid-cols-[0.8fr_2fr] gap-10 lg:gap-16 items-start">
+      <div class="lg:sticky lg:top-28">
+        <h2 id="t-avis" class="peint text-[2.6rem] md:text-[3.4rem]">Ce qu’en disent les clients</h2>
+        <div class="disque mt-8" role="img" aria-label={`Note Google : ${SITE.note} sur 5, ${SITE.nbAvis} avis`}>
+          <span class="font-enseigne text-[3.6rem] leading-none">{SITE.note}</span>
+          <span class="font-enseigne text-[1.3rem] leading-none">sur 5</span>
+          <span class="font-bold text-[.95rem] mt-1">{SITE.nbAvis} avis Google</span>
+        </div>
+      </div>
+      <div>
+        <blockquote class="avis-tete">
+          <p class="font-enseigne text-[1.9rem] md:text-[2.8rem] leading-[1.08]">« {AVIS[0]} »</p>
+          <footer class="mt-3 font-bold">Avis Google</footer>
+        </blockquote>
+        <div class="mt-12 grid md:grid-cols-2 gap-x-10 gap-y-8">
+          {AVIS.slice(1).map((a, i) => (
+            <blockquote class={`border-t-[3px] border-noir pt-4 ${i % 2 ? 'md:mt-10' : ''}`}>
+              <p class="text-[1.12rem] font-semibold">« {a} »</p>
+              <footer class="mt-2 text-[.95rem] font-bold text-gris">Avis Google</footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Traiteur -->
+  <section id="traiteur" class="bg-piment text-white border-y-[3px] border-noir" aria-labelledby="t-traiteur">
+    <div class="wrap py-14 md:py-20 grid md:grid-cols-[1.4fr_1fr] gap-8 items-center">
+      <div>
+        <h2 id="t-traiteur" class="peint text-[2.4rem] md:text-[3.2rem]">Traiteur et commandes groupées</h2>
+        <p class="mt-5 text-[1.15rem] max-w-[52ch]">Repas de famille, fête, collègues affamés : le chef prépare aussi en quantité, et on peut réserver. Appelez pour en parler : plats, nombre de personnes, délai.</p>
+        <p class="mt-3">Tarifs traiteur et délai de commande : <span class="ac">[À CONFIRMER]</span></p>
+      </div>
+      <div class="md:justify-self-end">
+        <a href={tel} class="btn btn-chaux !text-[1.35rem] !px-6 !min-h-[60px]">Appeler le {SITE.telAffiche}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Infos pratiques -->
+  <section id="infos" class="py-16 md:py-24" aria-labelledby="t-infos">
+    <div class="wrap">
+      <h2 id="t-infos" class="peint text-[2.6rem] md:text-[3.6rem]">Infos pratiques</h2>
+      <div class="mt-10 grid lg:grid-cols-[1fr_1fr_1.3fr] gap-10">
+        <div>
+          <h3 class="text-[1.6rem] mb-3">Horaires</h3>
+          <Statut class="mb-4" />
+          <dl class="horaires">
+            {HORAIRES.map((h) => (
+              <div class="flex justify-between gap-4 py-2.5 border-b-2 border-dashed border-noir/25" data-jour={h.jour}>
+                <dt class="font-bold">{h.nom}</dt>
+                <dd>{h.creneaux.length ? h.creneaux.map(([o, f]) => `${fmtHeure(o)} à ${fmtHeure(f)}`).join(', ') : 'Fermé'}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <div>
+          <h3 class="text-[1.6rem] mb-3">Adresse</h3>
+          <address class="not-italic text-[1.12rem]">{SITE.nom}<br />{SITE.adresse.rue}<br />{SITE.adresse.cp} {SITE.adresse.ville}</address>
+          <p class="mt-3"><a href={tel} class="font-extrabold text-[1.2rem] inline-flex min-h-[44px] items-center underline underline-offset-4">{SITE.telAffiche}</a></p>
+          <ul class="pratique mt-5 space-y-2.5">
+            <li>Parking gratuit, on se gare facilement</li>
+            <li>Accessible en fauteuil roulant</li>
+            <li>Terrasse, vente à emporter, réservations acceptées</li>
+            <li>Carte bancaire et sans contact</li>
+          </ul>
+        </div>
+        <CarteFacade />
+      </div>
+
+      <h3 class="mt-16 text-[2rem]">Questions qu’on nous pose souvent</h3>
+      <div class="faq mt-5 max-w-3xl">
+        {faq.map(([q, r, ac]) => (
+          <details class="border-t-[3px] border-noir">
+            <summary class="flex items-center justify-between gap-4 min-h-[56px] py-3 font-extrabold text-[1.12rem] cursor-pointer">{q}<span class="plus" aria-hidden="true"></span></summary>
+            <p class="pb-5 max-w-[62ch]">{r}{ac && <> {ac} <span class="ac">[À CONFIRMER]</span></>}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Bouton Pause du bandeau défilant (WCAG 2.2.2).
+  document.querySelectorAll<HTMLElement>('[data-defile]').forEach((d) => {
+    const b = d.querySelector<HTMLButtonElement>('[data-pause]');
+    b?.addEventListener('click', () => {
+      const arret = d.classList.toggle('arret');
+      b.setAttribute('aria-pressed', String(arret));
+      b.textContent = arret ? 'Relancer' : 'Pause';
+    });
+  });
+</script>
+
+<style>
+  .blague { max-width: 30ch; }
+  .note { border-bottom: 3px solid var(--color-soleil); }
+
+  /* Bandeau défilant lent ; à l'arrêt (et sur plusieurs lignes) si mouvement réduit */
+  .piste { animation: defile 55s linear infinite; }
+  .defile:hover .piste, .defile.arret .piste { animation-play-state: paused; }
+  .pause { position: absolute; right: .5rem; top: 50%; transform: translateY(-50%); z-index: 1; min-height: 44px; min-width: 44px; padding: 0 .8rem; font-weight: 800; font-size: .9rem; background: var(--color-chaux); border: 2px solid var(--color-noir); border-radius: 4px; cursor: pointer; }
+  .pause:hover { background: #fff; }
+  @keyframes defile { to { transform: translateX(-50%); } }
+  .point { width: .7rem; height: .7rem; background: var(--color-piment); border: 2px solid var(--color-noir); transform: rotate(45deg); }
+  @media (prefers-reduced-motion: reduce) {
+    .piste { animation: none; width: auto; }
+    .pause { display: none; }
+    .piste > ul:last-child { display: none; }
+    .piste > ul { flex-wrap: wrap; justify-content: center; }
+  }
+
+  .garnis li, .pratique li { padding-left: 1.6rem; position: relative; }
+  .garnis li::before, .pratique li::before { content: ''; position: absolute; left: 0; top: .5em; width: .75rem; height: .75rem; background: var(--color-feuille); border: 2px solid var(--color-noir); transform: rotate(45deg); }
+
+  .lexique dt { transform: rotate(-1deg); }
+
+  /* Le mur où sont clouées les planches */
+  .carte-mur { background-color: var(--color-chaux); border-top: 3px solid var(--color-noir); }
+  .planche[data-pose] { transform: rotate(var(--incl, 0deg)); }
+  :global(.js) .planche[data-pose] { opacity: 0; transform: translateY(-18px) rotate(calc(var(--incl, 0deg) * 3)); transition: opacity .5s ease, transform .6s cubic-bezier(.3, 1.4, .5, 1); }
+  :global(.js) .planche[data-pose].posee { opacity: 1; transform: rotate(var(--incl, 0deg)); }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .planche[data-pose] { opacity: 1; transform: rotate(var(--incl, 0deg)); }
+  }
+  .pointilles { border-bottom: 3px dotted currentColor; opacity: .55; min-width: 1.5rem; transform: translateY(-.3rem); }
+
+  .disque { width: 12rem; height: 12rem; border-radius: 50%; background: var(--color-piment); color: #fff; border: 4px solid var(--color-noir); box-shadow: 6px 6px 0 var(--color-noir); display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-6deg); text-align: center; }
+
+  .faq details:last-child { border-bottom: 3px solid var(--color-noir); }
+  .faq summary { list-style: none; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .plus { position: relative; width: 1.1rem; height: 1.1rem; flex: none; }
+  .plus::before, .plus::after { content: ''; position: absolute; inset: 50% 0 auto; height: 3px; background: currentColor; transform: translateY(-50%); transition: transform .2s ease; }
+  .plus::after { transform: translateY(-50%) rotate(90deg); }
+  details[open] .plus::after { transform: translateY(-50%) rotate(0deg); }
+
+  .horaires [aria-current='date'] { background: var(--color-soleil); margin-inline: -.5rem; padding-inline: .5rem; }
+</style>

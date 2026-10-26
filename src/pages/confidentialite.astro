@@ -1,0 +1,22 @@
+---
+import PageTexte from '../components/PageTexte.astro';
+import { SITE } from '../data/site';
+---
+<PageTexte title="Politique de confidentialité | Ldelice 95" description="Politique de confidentialité du site de Ldelice 95 à Saint-Brice-sous-Forêt : aucun cookie de suivi, aucun formulaire, la carte Google ne se charge qu'à votre demande." h1="Politique de confidentialité">
+  <p>Ce site présente le restaurant {SITE.nom}. Il ne vend rien en ligne, ne contient aucun formulaire et ne vous demande aucune donnée personnelle.</p>
+
+  <h2>Cookies et mesure d’audience</h2>
+  <p>Aucun cookie publicitaire ni outil de mesure d’audience n’est utilisé. C’est pour cela qu’il n’y a pas de bandeau cookies.</p>
+
+  <h2>Carte Google Maps</h2>
+  <p>La carte de la section « Infos pratiques » ne se charge que si vous cliquez sur « Afficher la carte Google ». À ce moment-là, Google peut déposer des cookies et recevoir votre adresse IP, selon sa propre <a href="https://policies.google.com/privacy?hl=fr" target="_blank" rel="noopener">politique de confidentialité</a>. Le lien « Itinéraire » ouvre Google Maps dans un nouvel onglet.</p>
+
+  <h2>Téléphone</h2>
+  <p>Quand vous appelez le {SITE.telAffiche} pour une commande, les informations que vous donnez (nom, commande, heure de retrait) servent uniquement à préparer cette commande.</p>
+
+  <h2>Hébergement</h2>
+  <p>Le site est hébergé par Vercel Inc. (États-Unis), qui peut enregistrer des journaux techniques (adresse IP, date, page demandée) pour la sécurité et le bon fonctionnement du service.</p>
+
+  <h2>Vos droits</h2>
+  <p>Vous disposez d’un droit d’accès, de rectification et d’effacement de vos données. Pour l’exercer : par téléphone au {SITE.telAffiche} ou par e-mail <span class="ac">[À CONFIRMER]</span>. Vous pouvez aussi saisir la CNIL (cnil.fr).</p>
+</PageTexte>

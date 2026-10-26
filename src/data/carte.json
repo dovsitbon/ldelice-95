@@ -1,0 +1,61 @@
+{
+  "_note": "Carte de Ldelice 95. prix = null affiche [À CONFIRMER]. Remplir prix (ex. \"6 €\") et ajouter les plats manquants après validation avec le chef. couleur : soleil | feuille | piment.",
+  "planches": [
+    {
+      "id": "bokits",
+      "titre": "Les bokits",
+      "couleur": "soleil",
+      "plats": [
+        {
+          "nom": "Bokit poulet",
+          "detail": "Pâte croustillante, poulet bien assaisonné, bien garni.",
+          "prix": null,
+          "noteprix": "6 € cité par un client il y a un an, à confirmer"
+        },
+        {
+          "nom": "Autres bokits",
+          "detail": "Garnitures du moment.",
+          "prix": null,
+          "aconfirmer": true
+        }
+      ]
+    },
+    {
+      "id": "plats",
+      "titre": "Les plats haïtiens",
+      "couleur": "feuille",
+      "plats": [
+        {
+          "nom": "Griot complet",
+          "detail": "Porc griot, riz, banane pesée et pikliz.",
+          "prix": null
+        },
+        {
+          "nom": "Poulet",
+          "detail": "Le poulet de la maison, composition de l’assiette à préciser.",
+          "prix": null,
+          "aconfirmer": true
+        }
+      ]
+    },
+    {
+      "id": "cotes",
+      "titre": "À côté",
+      "couleur": "piment",
+      "plats": [
+        { "nom": "Riz djondjon", "detail": "Le riz noir haïtien.", "prix": null },
+        { "nom": "Banane pesée", "detail": "Banane plantain aplatie et frite.", "prix": null },
+        { "nom": "Pikliz", "detail": "Fait maison, servi frais.", "prix": null },
+        { "nom": "Pickles", "detail": "", "prix": null }
+      ]
+    },
+    {
+      "id": "boissons",
+      "titre": "À boire",
+      "couleur": "soleil",
+      "plats": [
+        { "nom": "Boissons", "detail": "Liste et prix à venir.", "prix": null, "aconfirmer": true }
+      ]
+    }
+  ]
+}

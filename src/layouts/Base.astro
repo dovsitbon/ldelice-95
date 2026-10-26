@@ -1,0 +1,136 @@
+---
+import '../styles/global.css';
+import Entete from '../components/Entete.astro';
+import Pied from '../components/Pied.astro';
+import BarreMobile from '../components/BarreMobile.astro';
+import { SITE, HORAIRES } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonld?: object[];
+  noindex?: boolean;
+}
+const { title, description, jsonld = [], noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = new URL('/og.png', Astro.site);
+const jours = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+const restaurant = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  '@id': new URL('/#restaurant', Astro.site).href,
+  name: SITE.nom,
+  alternateName: SITE.autreNom,
+  description: "Bokits et cuisine haïtienne 100 % faits maison, cuisinés sous vos yeux. Vente à emporter, terrasse, traiteur. Saint-Brice-sous-Forêt (Val-d'Oise).",
+  url: new URL('/', Astro.site).href,
+  telephone: SITE.telLien,
+  image: og.href,
+  servesCuisine: ['Caribbean', 'Haitian'],
+  hasMenu: new URL('/#carte', Astro.site).href,
+  acceptsReservations: true,
+  paymentAccepted: 'Carte bancaire, paiement sans contact',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.adresse.rue,
+    postalCode: SITE.adresse.cp,
+    addressLocality: SITE.adresse.ville,
+    addressRegion: SITE.adresse.region,
+    addressCountry: SITE.adresse.pays,
+  },
+  areaServed: [SITE.adresse.ville, ...SITE.voisines].map((n) => ({ '@type': 'City', name: n })),
+  openingHoursSpecification: HORAIRES.flatMap((h) =>
+    h.creneaux.map(([o, f]) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: jours[h.jour], opens: o, closes: f })),
+  ),
+  amenityFeature: [
+    { '@type': 'LocationFeatureSpecification', name: 'Parking gratuit', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Accessible en fauteuil roulant', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Terrasse', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Vente à emporter', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Service traiteur', value: true },
+  ],
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: SITE.noteNum, bestRating: 5, ratingCount: SITE.nbAvis },
+  ...(SITE.sameAs.length ? { sameAs: SITE.sameAs } : {}),
+};
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#fbfaf5" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Ldelice 95" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ldelice 95, bokits et cuisine haïtienne à Saint-Brice-sous-Forêt" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(restaurant)} />
+    {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+  </head>
+  <body class="min-h-dvh flex flex-col pb-[76px] md:pb-0">
+    <a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-chaux focus:px-4 focus:py-3 focus:font-bold">Aller au contenu</a>
+    <Entete />
+    <main id="contenu" class="flex-1">
+      <slot />
+    </main>
+    <Pied />
+    <BarreMobile />
+    <script>
+      // Seul mouvement au scroll : les planches de la carte se posent quand elles arrivent à l'écran.
+      const planches = document.querySelectorAll('[data-pose]');
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const io = new IntersectionObserver((entrees) => {
+          entrees.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('posee'); io.unobserve(e.target); } });
+        }, { threshold: 0.25 });
+        planches.forEach((p) => io.observe(p));
+      } else planches.forEach((p) => p.classList.add('posee'));
+    </script>
+    <script is:inline define:vars={{ horaires: HORAIRES }}>
+      (function () {
+        try {
+          var parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+          var get = function (t) { return (parts.find(function (p) { return p.type === t; }) || {}).value; };
+          var j = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[get('weekday')];
+          var min = parseInt(get('hour'), 10) * 60 + parseInt(get('minute'), 10);
+          var toMin = function (h) { var a = h.split(':'); return +a[0] * 60 + +a[1]; };
+          var fmt = function (h) { return h.replace(':00', 'h').replace(':', 'h'); };
+          var noms = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+          var jour = function (n) { return horaires.find(function (h) { return h.jour === n; }) || { creneaux: [] }; };
+          var auj = jour(j).creneaux;
+          var enCours = auj.find(function (c) { return min >= toMin(c[0]) && min < toMin(c[1]); });
+          var texte;
+          if (enCours) texte = 'Ouvert maintenant, jusqu’à ' + fmt(enCours[1]);
+          else {
+            var plusTard = auj.find(function (c) { return min < toMin(c[0]); });
+            if (plusTard) texte = 'Fermé, ouvre à ' + fmt(plusTard[0]);
+            else {
+              for (var k = 1; k <= 7; k++) {
+                var c = jour((j + k) % 7).creneaux;
+                if (c.length) { texte = 'Fermé, ouvre ' + (k === 1 ? 'demain' : noms[(j + k) % 7]) + ' à ' + fmt(c[0][0]); break; }
+              }
+            }
+          }
+          document.querySelectorAll('[data-statut]').forEach(function (el) {
+            el.dataset.ouvert = enCours ? 'oui' : 'non';
+            var t = el.querySelector('[data-statut-texte]');
+            if (t && texte) t.textContent = texte;
+          });
+          document.querySelectorAll('[data-jour="' + j + '"]').forEach(function (el) { el.setAttribute('aria-current', 'date'); });
+        } catch (e) {}
+      })();
+    </script>
+  </body>
+</html>

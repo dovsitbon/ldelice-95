@@ -1,0 +1,10 @@
+---
+import { SITE } from '../data/site';
+---
+<div class="barre md:hidden fixed inset-x-0 bottom-0 z-30 bg-noir grid grid-cols-[1fr_auto] gap-2 p-2.5 pb-[max(.625rem,env(safe-area-inset-bottom))]">
+  <a href={`tel:${SITE.telLien}`} class="btn btn-piment whitespace-nowrap">Appeler {SITE.telAffiche}</a>
+  <a href={SITE.itineraire} class="btn btn-soleil" target="_blank" rel="noopener">Itinéraire</a>
+</div>
+<style>
+  .barre .btn { box-shadow: none; border-color: var(--color-chaux); font-size: 1.05rem; padding-inline: .9rem; }
+</style>

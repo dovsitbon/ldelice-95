@@ -1,0 +1,31 @@
+---
+import Logo from './Logo.astro';
+import { SITE, HORAIRES, fmtHeure } from '../data/site';
+const annee = new Date().getFullYear();
+const [ouvre, ferme] = HORAIRES[0].creneaux[0];
+---
+<footer class="bg-noir text-chaux">
+  <div class="madras madras-bord" aria-hidden="true"></div>
+  <div class="wrap py-12 grid gap-10 md:grid-cols-[1.3fr_1fr_1fr]">
+    <div>
+      <Logo />
+      <p class="mt-5 max-w-[34ch]">Bokits et cuisine haïtienne, faits maison et cuisinés sous vos yeux. En terrasse ou à emporter.</p>
+    </div>
+    <div>
+      <h2 class="text-soleil text-[1.4rem] mb-3">Adresse</h2>
+      <p>{SITE.nom}<br />{SITE.adresse.rue}<br />{SITE.adresse.cp} {SITE.adresse.ville}</p>
+      <p class="mt-2"><a href={`tel:${SITE.telLien}`} class="font-bold inline-flex min-h-[44px] items-center underline underline-offset-4">{SITE.telAffiche}</a></p>
+    </div>
+    <div>
+      <h2 class="text-soleil text-[1.4rem] mb-3">Horaires</h2>
+      <p>Mardi au samedi : {fmtHeure(ouvre)} à {fmtHeure(ferme)}<br />Dimanche et lundi : fermé</p>
+    </div>
+  </div>
+  <div class="border-t border-chaux/25">
+    <div class="wrap py-4 flex flex-wrap items-center gap-x-6 text-[.95rem]">
+      <p>© {annee} {SITE.nom}, Saint-Brice-sous-Forêt</p>
+      <a href="/mentions-legales/" class="inline-flex min-h-[44px] items-center underline underline-offset-4">Mentions légales</a>
+      <a href="/confidentialite/" class="inline-flex min-h-[44px] items-center underline underline-offset-4">Confidentialité</a>
+    </div>
+  </div>
+</footer>

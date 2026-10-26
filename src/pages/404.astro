@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site';
+---
+<Base title="Page introuvable | Ldelice 95" description="Cette page n'existe pas. Retrouvez les bokits et la cuisine haïtienne de Ldelice 95 à Saint-Brice-sous-Forêt." noindex>
+  <div class="madras madras-bord" aria-hidden="true"></div>
+  <section class="wrap py-16 md:py-24 grid md:grid-cols-[auto_1fr] gap-10 items-center">
+    <p class="quatre font-enseigne text-[7rem] md:text-[11rem] leading-none" aria-hidden="true">404</p>
+    <div>
+      <h1 class="peint text-[2.4rem] md:text-[3.4rem]">Cette page ne paie vraiment pas de mine</h1>
+      <p class="mt-5 text-[1.15rem] max-w-[44ch]">Elle n’existe pas, tout simplement. Les bokits, eux, sont toujours au {SITE.adresse.rue}.</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href="/" class="btn btn-piment">Retour à l’accueil</a>
+        <a href="/#carte" class="btn btn-chaux">Voir la carte</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .quatre { color: var(--color-soleil); -webkit-text-stroke: 4px var(--color-noir); transform: rotate(-4deg); text-shadow: 7px 7px 0 var(--color-noir); }
+</style>

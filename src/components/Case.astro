@@ -1,0 +1,75 @@
+---
+// La petite case dessinée à la main : toit de tôle, enseigne peinte, auvent madras, comptoir, terrasse.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<svg class={cls} viewBox="0 0 560 450" role="img" aria-labelledby="case-titre">
+  <title id="case-titre">Dessin de la petite maison Ldelice 95 : toit de tôle verte, enseigne peinte jaune, auvent en madras au-dessus du comptoir, porte rouge numéro 2 et une table en terrasse sous un parasol.</title>
+  <defs>
+    <pattern id="case-madras" width="24" height="24" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#f6c320" />
+      <rect width="7" height="24" fill="#c8281d" fill-opacity=".75" />
+      <rect width="24" height="7" fill="#c8281d" fill-opacity=".75" />
+      <rect x="12" width="2" height="24" fill="#1e7b3a" />
+      <rect y="12" width="24" height="2" fill="#1e7b3a" />
+      <rect x="18" width="1" height="24" fill="#fbfaf5" />
+      <rect y="18" width="24" height="1" fill="#fbfaf5" />
+    </pattern>
+    <clipPath id="case-toit"><path d="M58 182 L112 96 L404 90 L462 176 Z" /></clipPath>
+  </defs>
+
+  <!-- soleil -->
+  <circle cx="478" cy="64" r="40" fill="#f6c320" stroke="#141414" stroke-width="3.5" />
+
+  <!-- murs -->
+  <path d="M90 176 L424 172 L427 418 L87 419 Z" fill="#fbfaf5" stroke="#141414" stroke-width="4" stroke-linejoin="round" />
+  <path d="M98 400 C 160 396, 300 398, 418 395" stroke="#141414" stroke-opacity=".18" stroke-width="2" fill="none" />
+
+  <!-- toit de tôle ondulée -->
+  <path d="M58 182 L112 96 L404 90 L462 176 Z" fill="#1e7b3a" />
+  <g clip-path="url(#case-toit)" stroke="#155c2a" stroke-width="5">
+    {Array.from({ length: 24 }, (_, i) => <line x1={60 + i * 17} y1="80" x2={52 + i * 17} y2="190" />)}
+  </g>
+  <path d="M58 182 L112 96 L404 90 L462 176 Z" fill="none" stroke="#141414" stroke-width="4" stroke-linejoin="round" />
+  <path d="M54 182 L466 176" stroke="#141414" stroke-width="7" stroke-linecap="round" />
+
+  <!-- enseigne peinte -->
+  <g transform="rotate(-2.5 255 222)">
+    <rect x="128" y="192" width="254" height="62" rx="4" fill="#f6c320" stroke="#141414" stroke-width="4" />
+    <text x="150" y="238" font-family="Lilita One, sans-serif" font-size="40" fill="#141414">Ldelice</text>
+    <circle cx="335" cy="223" r="24" fill="#c8281d" stroke="#141414" stroke-width="3" />
+    <text x="335" y="234" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="27" fill="#fbfaf5">95</text>
+  </g>
+
+  <!-- auvent madras -->
+  <path d="M116 270 L304 268 L318 304 L102 306 Z" fill="url(#case-madras)" stroke="#141414" stroke-width="3.5" stroke-linejoin="round" />
+  <path d="M102 306 q13.5 14 27 0 q13.5 14 27 0 q13.5 14 27 0 q13.5 14 27 0 q13.5 14 27 0 q13.5 14 27 0 q13.5 14 27 0 q13.5 14 27 0" fill="#c8281d" stroke="#141414" stroke-width="3" />
+
+  <!-- comptoir : on cuisine sous vos yeux -->
+  <rect x="124" y="318" width="172" height="62" fill="#141414" />
+  <path d="M182 362 h40 v-14 h-40 z" fill="#4b4a45" />
+  <path d="M176 348 h52" stroke="#fbfaf5" stroke-width="3" stroke-linecap="round" />
+  <path d="M192 340 c-6 -8 6 -12 0 -20 M204 340 c-6 -8 6 -12 0 -20 M216 340 c-6 -8 6 -12 0 -20" stroke="#fbfaf5" stroke-width="2.5" fill="none" stroke-linecap="round" />
+  <rect x="114" y="378" width="192" height="13" fill="#c8281d" stroke="#141414" stroke-width="3.5" />
+  <text x="112" y="413" font-family="Lilita One, sans-serif" font-size="17" fill="#1e7b3a" transform="rotate(-1.5 112 413)">fait maison</text>
+
+  <!-- porte -->
+  <rect x="336" y="292" width="66" height="127" fill="#c8281d" stroke="#141414" stroke-width="4" />
+  <rect x="347" y="304" width="44" height="40" fill="none" stroke="#141414" stroke-width="2.5" />
+  <circle cx="390" cy="362" r="4" fill="#141414" />
+  <!-- plaque de rue : 2 rue René Cassin -->
+  <rect x="352" y="263" width="34" height="22" rx="3" fill="#141414" />
+  <text x="369" y="280" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="17" fill="#fbfaf5">2</text>
+
+  <!-- terrasse : parasol, table, tabourets -->
+  <path d="M440 290 Q 497 226 554 290 Z" fill="#f6c320" stroke="#141414" stroke-width="3.5" stroke-linejoin="round" />
+  <path d="M478 290 Q 490 246 497 240 Q 504 246 516 290" fill="#1e7b3a" stroke="#141414" stroke-width="3" />
+  <line x1="497" y1="240" x2="497" y2="419" stroke="#141414" stroke-width="4" />
+  <rect x="466" y="360" width="62" height="9" fill="#141414" />
+  <path d="M474 369 L470 419 M520 369 L524 419" stroke="#141414" stroke-width="3.5" />
+  <path d="M448 386 h18 M452 386 l-3 33 M462 386 l3 33 M528 386 h18 M532 386 l-3 33 M542 386 l3 33" stroke="#141414" stroke-width="3.5" stroke-linecap="round" />
+
+  <!-- sol -->
+  <path d="M10 420 C 120 416, 300 423, 552 418" stroke="#141414" stroke-width="4" fill="none" stroke-linecap="round" />
+  <path d="M30 428 l6 -9 l4 9 M66 430 l5 -8 l4 8 M540 430 l4 -8 l5 8" stroke="#1e7b3a" stroke-width="3" fill="none" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ldelice-95.vercel.app/sitemap-index.xml

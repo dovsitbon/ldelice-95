@@ -1,0 +1,31 @@
+---
+import Logo from './Logo.astro';
+import { SITE } from '../data/site';
+const liens = [
+  ['/#bokit', 'Le bokit'],
+  ['/#cuisine', 'Cuisine haïtienne'],
+  ['/#carte', 'La carte'],
+  ['/#infos', 'Infos pratiques'],
+];
+---
+<header class="sticky top-0 z-40 bg-chaux border-b-[3px] border-noir">
+  <div class="wrap flex items-center justify-between gap-4 h-[68px]">
+    <a href="/" class="no-underline shrink-0 py-1" aria-label="Ldelice 95, retour à l’accueil"><Logo /></a>
+    <nav aria-label="Navigation principale" class="hidden lg:block">
+      <ul class="flex gap-1">
+        {liens.map(([href, txt]) => (
+          <li><a href={href} class="nav-lien inline-flex items-center min-h-[44px] px-3 font-bold no-underline">{txt}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a href={`tel:${SITE.telLien}`} class="btn btn-piment tel-entete hidden sm:inline-flex">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>
+      {SITE.telAffiche}
+    </a>
+  </div>
+</header>
+<style>
+  .nav-lien { text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .nav-lien:hover { text-decoration: underline; text-decoration-color: var(--color-piment); }
+  .tel-entete { min-height: 44px; font-size: 1rem; padding-inline: .9rem; box-shadow: 3px 3px 0 var(--color-noir); }
+</style>
